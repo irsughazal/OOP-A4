@@ -66,82 +66,115 @@ int main() {
 
 ----------------------------------------------------------------------------------------
 Question#02:
+class Product {
+  private:
+    int productId;
+    string productName;
+    double price;
 
- #include <iostream> 
-#include <string> 
-#include <vector> 
- 
-Class  Product { private: 
-    int productId;     std::string productName;     double price; 
- 
-public: 
-    Product(int id, const std::string& name, double p) : productId(id), productName(name), price(p) {} 
- 
-    void showProductDetails() const {         std::cout << "Product ID: " << productId << ", Name: " << productName << ", Price: $" << price << std::endl; 
-    } 
- 
-    double getPrice() const { 
-        return price; 
-    } 
-}; 
- 
- class ShoppingCart { private:     std::vector<Product*> products;  double totalCost; 
- 
-public:     void addProduct(Product* product) {         products.push_back(product); 
-        totalCost += product->getPrice(); 
-    } 
- 
-    void showAllProducts() const { 
-        std::cout << "Products in the cart:" << std::endl;         for (const auto& product : products) { 
-            product->showProductDetails(); 
-        } 
-    } 
- 
-    double calculateTotalCost() const { 
-        return totalCost; 
-    } 
-}; 
- 
- { private: 
-    int userId; 
-    ShoppingCart* shoppingCart; 
- 
-public: 
-    User(int id) : userId(id), shoppingCart(nullptr) {} 
- 
-    void linkShoppingCart(ShoppingCart* cart) { 
-        shoppingCart = cart; 
-    } 
- 
-    void showUserDetails() const { 
-        std::cout << "User ID: " << userId << std::endl; 
-    } 
- 
-    ShoppingCart* getShoppingCart() const { 
-        return shoppingCart; 
-    } 
-}; 
- 
-int main() { 
-    
-    Product* product1 = new Product(1, "Laptop", 999.99); 
-    Product* product2 = new Product(2, "Phone", 599.50); 
-    Product* product3 = new Product(3, "Headphones", 99.99); 
- 
-        Shopping Cart cart; cart.addProduct(product1);     cart.addProduct(product2);     cart.addProduct(product3); 
- 
-    
-    User user(101); 
-    user.linkShoppingCart(&cart); 
- 
-       user.showUserDetails(); 
-    ShoppingCart* userCart = user.getShoppingCart();     if (userCart) { 
-        userCart->showAllProducts(); 
-        std::cout << "Total cost: $" << userCart->calculateTotalCost() << std::endl; 
-    } 
- 
-    
-    delete product1;     delete product2;     delete product3; 
- 
-    return 0; 
+  public:
+    Product(int id, string name, double p) {
+      productId = id;
+      productName = name;
+      price = p;
+    }
+
+    void display() {
+      cout << "Product ID: " << productId << endl;
+      cout << "Product Name: " << productName << endl;
+      cout << "Price: " << price << endl;
+    }
+    int getId() {
+      return productId;
+    }
+
+    string getName() {
+      return productName;
+    }
+
+    double getPrice() {
+      return price;
+    }
+};
+class ShoppingCart {
+  private:
+    Product* products[100]; 
+    int size;
+
+  public:
+    ShoppingCart() {
+      size = 0;
+    }
+
+    void addProduct(Product* p) {
+      products[size] = p;
+      size++;
+    }
+    void displayProducts() {
+      cout << "Products in the cart:" << endl;
+      for (int i = 0; i < size; i++) {
+        products[i]->display();
+        cout << endl;
+      }
+    }
+    double getTotalCost() {
+      double total = 0;
+      for (int i = 0; i < size; i++) {
+        total += products[i]->getPrice();
+      }
+      return total;
+    }
+};
+
+class User {
+  private:
+    int userId;
+    ShoppingCart* cart; 
+
+  public:
+    User(int id) {
+      userId = id;
+      cart = NULL; 
+    }
+    void display() {
+      cout << "User ID: " << userId << endl;
+      if (cart != NULL) {
+        cout << "Shopping Cart: " << endl;
+        cart->displayProducts();
+        cout << "Total Cost: " << cart->getTotalCost() << endl;
+      }
+      else {
+        cout << "No shopping cart" << endl;
+      }
+    }
+
+    void createCart() {
+      cart = new ShoppingCart(); 
+    }
+
+    void addToCart(Product* p) {
+      if (cart == NULL) {
+        createCart();
+      }
+      cart->addProduct(p);
+    }
+};
+
+int main() {
+  Product* p1 = new Product(1, "Laptop", 50000);
+  Product* p2 = new Product(2, "Mobile", 15000);
+  Product* p3 = new Product(3, "Book", 500);
+
+  User* u1 = new User(101);
+  User* u2 = new User(102);
+
+  u1->addToCart(p1);
+  u1->addToCart(p2);
+  u2->addToCart(p3);
+
+  u1->display();
+  cout << endl;
+  u2->display();
+
+  return 0;
 }
