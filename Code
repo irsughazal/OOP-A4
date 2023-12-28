@@ -1,53 +1,70 @@
+Question 1 and question 2 code
+
 Question#01(b) 
- #include <iostream> 
-#include <string> 
- 
- class Staff { protected:     std::string name;     int staffID; 
-    std::string department; 
- 
-public: 
-    Staff(const std::string& n, int id, const std::string& dept) : name(n), staffID(id), department(dept) {} 
- 
-       virtual void displayInfo() const = 0; 
- 
-    virtual ~Staff() {} 
-}; 
-  class Teacher : public Staff { private: 
-    std::string subject; 
- 
-public: 
-    Teacher(const std::string& n, int id, const std::string& dept, const std::string& sub)         : Staff(n, id, dept), subject(sub) {} 
- 
-     void displayInfo() const override { 
-        std::cout << "Teacher: " << name << ", ID: " << staffID << ", Department: " << 
-department 
-                  << ", Subject: " << subject << std::endl;     } 
-}; 
-  
- class AdministrativeStaff : public Staff { private: 
-    std::string role; 
- 
-public: 
-    AdministrativeStaff(const std::string& n, int id, const std::string& dept, const std::string& r) 
-        : Staff(n, id, dept), role(r) {} 
- 
-     void displayInfo() const override { 
-        std::cout << "Administrative Staff: " << name << ", ID: " << staffID << ", 
-Department: " << department 
-                  << ", Role: " << role << std::endl; 
-    } 
-}; 
- 
-int main() { 
-    
-    Staff* staff1 = new Teacher("John Doe", 101, "Science Department", "Biology"); 
-    Staff* staff2 = new AdministrativeStaff("Alice Smith", 201, "Administration", "Secretary"); 
- 
-      staff1->displayInfo();     staff2->displayInfo(); 
- 
-    delete staff1;     delete staff2;     return 0; 
+#include <iostream>
+#include <string>
+
+class Student {
+protected:
+    std::string m_name; 
+public:
+    Student(std::string name) : m_name(name) {}
+
+    std::string getName() const {
+        return m_name;
+    }
+
+    virtual std::string getDegree() const = 0;
+
+    virtual ~Student() {}
+};
+
+class Undergraduate : public Student {
+private:
+    std::string m_major; 
+public:
+    Undergraduate(std::string name, std::string major) : Student(name), m_major(major) {}
+    std::string getMajor() const {
+        return m_major;
+    }
+
+    std::string getDegree() const override {
+        return "Bachelor of " + m_major;
+    }
+};
+
+class Graduate : public Student {
+private:
+    std::string m_field; 
+public:
+    Graduate(std::string name, std::string field) : Student(name), m_field(field) {}
+
+    std::string getField() const {
+        return m_field;
+    }
+
+    std::string getDegree() const override {
+        return "Master of " + m_field;
+    }
+};
+
+void printStudent(const Student &student) {
+    std::cout << "Name: " << student.getName() << "\n";
+    std::cout << "Degree: " << student.getDegree() << "\n";
 }
- 
+
+int main() {
+    Undergraduate u1("Irsa", "Computer Science");
+
+    Graduate g1("Sana", "Mathematics");
+    printStudent(u1);
+    printStudent(g1);
+
+    return 0;
+}
+
+
+----------------------------------------------------------------------------------------
 Question#02:
 
  #include <iostream> 
